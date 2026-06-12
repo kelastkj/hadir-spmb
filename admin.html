@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Admin Hadir SPMB - SMKN 2 Marabahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#0f7a3b',
+              dark: '#11382a',
+              gold: '#f2b705',
+              red: '#ce3a20'
+            }
+          },
+          boxShadow: {
+            soft: '0 18px 45px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-[#f4f7fb] text-slate-900 antialiased">
+  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+      <div class="flex min-w-0 items-center gap-3">
+        <img src="assets/logo.png" alt="Logo SMKN 2 Marabahan" class="h-11 w-11 shrink-0 object-contain sm:h-12 sm:w-12">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase text-brand-green sm:text-sm">Hadir SPMB</p>
+          <h1 class="text-base font-semibold leading-tight text-slate-950 sm:text-xl">Dashboard Panitia</h1>
+        </div>
+      </div>
+      <div class="flex min-w-0 items-center gap-2">
+        <a href="index.html" class="inline-flex min-h-10 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm hover:border-brand-green hover:text-brand-green">Form</a>
+        <button id="logoutButton" type="button" class="hidden min-h-10 rounded-lg bg-slate-900 px-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8">
+    <section id="loginView" class="mx-auto mt-8 max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-soft">
+      <div class="border-l-4 border-brand-green p-6">
+        <p class="text-xs font-bold uppercase text-slate-500">Area Admin</p>
+        <h2 class="mt-1 text-xl font-semibold text-slate-950">Login Panitia</h2>
+        <p class="mt-2 break-words text-sm leading-6 text-slate-600">Masuk untuk melihat data pendaftar dan memperbarui status verifikasi.</p>
+      </div>
+      <form id="loginForm" class="grid gap-4 border-t border-slate-200 p-6">
+        <div id="loginNotice" class="hidden rounded-md border p-3 text-sm leading-6"></div>
+        <label class="grid gap-1.5">
+          <span class="text-sm font-bold text-slate-700">Username</span>
+          <input name="username" required autocomplete="username" class="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100">
+        </label>
+        <label class="grid gap-1.5">
+          <span class="text-sm font-bold text-slate-700">Password</span>
+          <input name="password" type="password" required autocomplete="current-password" class="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100">
+        </label>
+        <button id="loginButton" class="min-h-11 rounded-lg bg-brand-green px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-dark focus:outline-none focus:ring-4 focus:ring-emerald-100">Login</button>
+      </form>
+    </section>
+
+    <section id="dashboardView" class="hidden">
+      <div class="mb-5 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-soft sm:flex-row sm:items-center sm:justify-between">
+        <div class="min-w-0">
+          <h2 id="adminName" class="text-lg font-semibold text-slate-950"></h2>
+          <p id="adminRole" class="text-sm text-slate-500"></p>
+        </div>
+        <button id="refreshButton" type="button" class="inline-flex min-h-10 w-full items-center justify-center rounded-lg border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:border-brand-green hover:text-brand-green sm:w-auto">Muat Ulang</button>
+      </div>
+
+      <nav class="mb-5 rounded-xl border border-slate-200 bg-white p-2 shadow-soft" aria-label="Menu admin">
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" data-tab="overview" class="tab-button min-h-11 rounded-lg px-2 text-xs font-semibold sm:px-4 sm:text-sm"><i class="fa-solid fa-chart-pie tab-icon" aria-hidden="true"></i><span>Ringkasan</span></button>
+          <button type="button" data-tab="majors" class="tab-button min-h-11 rounded-lg px-2 text-xs font-semibold sm:px-4 sm:text-sm"><i class="fa-solid fa-graduation-cap tab-icon" aria-hidden="true"></i><span>Jurusan</span></button>
+          <button type="button" data-tab="data" class="tab-button min-h-11 rounded-lg px-2 text-xs font-semibold sm:px-4 sm:text-sm"><i class="fa-solid fa-users tab-icon" aria-hidden="true"></i><span>Pendaftar</span></button>
+        </div>
+      </nav>
+
+      <section data-tab-panel="overview" class="tab-panel">
+        <div id="summaryGrid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"></div>
+
+        <div class="mt-5 grid gap-5 lg:grid-cols-[1.2fr_1fr]">
+          <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-soft">
+            <p class="text-xs font-semibold uppercase text-brand-green">Jurusan teratas</p>
+            <h2 class="mt-1 text-lg font-semibold text-slate-950">Peminat pilihan 1</h2>
+            <div id="overviewMajorList" class="mt-4 grid gap-3"></div>
+          </section>
+          <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-soft">
+            <p class="text-xs font-semibold uppercase text-brand-green">Fokus hari ini</p>
+            <h2 class="mt-1 text-lg font-semibold text-slate-950">Prioritas panitia</h2>
+            <div id="priorityList" class="mt-4 grid gap-3"></div>
+          </section>
+        </div>
+      </section>
+
+      <section data-tab-panel="majors" class="tab-panel hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-soft">
+        <div class="flex flex-col gap-3 border-b border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase text-brand-green">Peminat jurusan</p>
+            <h2 class="text-lg font-semibold text-slate-950">Rekap pilihan calon siswa</h2>
+          </div>
+          <select id="majorStatsMode" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-brand-green focus:ring-4 focus:ring-emerald-100">
+            <option value="pilihan1">Pilihan 1</option>
+            <option value="pilihan2">Pilihan 2</option>
+            <option value="pilihan3">Pilihan 3</option>
+            <option value="all">Semua pilihan</option>
+          </select>
+        </div>
+        <div class="grid gap-4 p-4 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <div id="topMajorCard" class="rounded-xl bg-emerald-700 p-4 text-white"></div>
+          <div id="majorStatsGrid" class="grid gap-3 md:grid-cols-2 xl:grid-cols-3"></div>
+        </div>
+      </section>
+
+      <section data-tab-panel="data" class="tab-panel hidden">
+        <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-soft">
+          <div class="grid gap-3 lg:grid-cols-[minmax(220px,1.4fr)_minmax(150px,0.8fr)_minmax(180px,1fr)_minmax(220px,1.15fr)]">
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Cari Data</span>
+              <input id="searchInput" type="search" placeholder="Nama, NISN, antrian, asal sekolah" class="min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100">
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Tanggal</span>
+              <input id="dateFilter" type="date" class="min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100">
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Status</span>
+              <select id="statusFilter" class="min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100"></select>
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Pilihan Jurusan 1</span>
+              <select id="majorFilter" class="min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100"></select>
+            </label>
+          </div>
+        </section>
+
+        <section class="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-soft">
+        <div class="flex flex-col gap-3 border-b border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div class="min-w-0">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Data Pendaftar</h2>
+            <p id="resultCount" class="mt-1 text-sm text-slate-500"></p>
+          </div>
+          <label class="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-700">
+            <input id="selectAllVisible" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-green">
+            Pilih semua hasil filter
+          </label>
+        </div>
+
+        <div id="bulkActionBar" class="hidden border-b border-emerald-200 bg-emerald-50 px-4 py-3">
+          <div class="grid gap-3 lg:grid-cols-[1fr_1.2fr_auto_auto] lg:items-end">
+            <div>
+              <p class="text-sm font-semibold text-emerald-950">Batch verifikasi</p>
+              <p id="selectionInfo" class="text-sm text-emerald-800">Belum ada data dipilih.</p>
+            </div>
+            <label class="grid gap-1.5">
+              <span class="text-sm font-medium text-emerald-950">Status baru</span>
+              <select id="batchStatus" class="min-h-10 rounded-lg border border-emerald-200 bg-white px-3 text-sm outline-none focus:border-brand-green focus:ring-4 focus:ring-emerald-100"></select>
+            </label>
+            <input id="batchNote" type="text" placeholder="Catatan opsional" class="min-h-10 rounded-lg border border-emerald-200 bg-white px-3 text-sm outline-none focus:border-brand-green focus:ring-4 focus:ring-emerald-100">
+            <div class="grid grid-cols-2 gap-2">
+              <button id="applyBatchButton" type="button" class="min-h-10 rounded-lg bg-brand-green px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50">Update</button>
+              <button id="clearSelectionButton" type="button" class="min-h-10 rounded-lg border border-emerald-200 bg-white px-3 text-sm font-semibold text-slate-700">Batal</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="loadingState" class="hidden border-b border-slate-100 p-4">
+          <div class="mb-3 flex items-center gap-2 text-sm font-medium text-slate-500">
+            <span class="h-2.5 w-2.5 animate-pulse rounded-full bg-brand-green"></span>
+            Memuat data pendaftar dari Spreadsheet...
+          </div>
+          <div class="hidden gap-3 md:grid">
+            <div class="h-14 animate-pulse rounded-lg bg-slate-100"></div>
+            <div class="h-14 animate-pulse rounded-lg bg-slate-100"></div>
+            <div class="h-14 animate-pulse rounded-lg bg-slate-100"></div>
+          </div>
+          <div class="grid gap-3 md:hidden">
+            <div class="h-28 animate-pulse rounded-xl bg-slate-100"></div>
+            <div class="h-28 animate-pulse rounded-xl bg-slate-100"></div>
+          </div>
+        </div>
+
+        <div id="dataContent">
+          <div id="mobileList" class="grid gap-3 p-3 md:hidden"></div>
+
+        <div class="hidden overflow-x-auto md:block">
+          <table class="w-full min-w-[880px] table-fixed divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="w-16 px-5 py-3">Pilih</th>
+                <th class="w-36 px-5 py-3">Antrian</th>
+                <th class="w-[28%] px-5 py-3">Calon Siswa</th>
+                <th class="w-[30%] px-5 py-3">Pilihan 1</th>
+                <th class="w-44 px-5 py-3">Status</th>
+                <th class="w-28 px-5 py-3 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-slate-100 bg-white"></tbody>
+          </table>
+        </div>
+          <div id="emptyState" class="hidden p-8 text-center text-sm text-slate-500">Tidak ada data yang cocok dengan filter.</div>
+        </div>
+      </section>
+      </section>
+    </section>
+  </main>
+
+  <div id="detailModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/60 p-3 sm:p-5">
+    <div class="mx-auto flex min-h-full w-full max-w-3xl items-center">
+      <div class="flex max-h-[92vh] w-full flex-col overflow-hidden rounded-lg bg-white shadow-2xl">
+        <div class="flex items-start justify-between gap-3 border-b border-slate-200 px-4 py-4 sm:px-5">
+          <div class="min-w-0">
+            <h2 id="modalTitle" class="truncate text-lg font-semibold text-slate-950">Detail Calon Siswa</h2>
+            <p id="modalSubtitle" class="truncate text-sm text-slate-500"></p>
+          </div>
+          <button id="closeModalButton" type="button" class="min-h-10 shrink-0 rounded-md border border-slate-300 px-3 text-sm font-bold hover:bg-slate-50">Tutup</button>
+        </div>
+        <div class="overflow-y-auto p-4 sm:p-5">
+          <div id="detailList" class="grid gap-4"></div>
+          <form id="statusForm" class="mt-5 grid gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <input type="hidden" name="id">
+            <div class="grid gap-4 lg:grid-cols-[1fr_1.4fr]">
+              <label class="grid min-w-0 gap-1.5">
+                <span class="text-sm font-bold text-slate-700">Status Verifikasi</span>
+                <select name="statusVerifikasi" class="min-h-11 w-full rounded-md border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100"></select>
+              </label>
+              <label class="grid min-w-0 gap-1.5">
+                <span class="text-sm font-bold text-slate-700">Catatan Panitia</span>
+                <textarea name="catatanPanitia" rows="3" class="w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-brand-green focus:ring-4 focus:ring-emerald-100"></textarea>
+              </label>
+            </div>
+            <div class="flex justify-end">
+              <button id="saveStatusButton" class="min-h-11 w-full rounded-lg bg-brand-green px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-dark sm:w-auto">Simpan Status</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js?v=20260613-9"></script>
+  <script src="js/api.js?v=20260613-9"></script>
+  <script src="js/admin.js?v=20260613-9"></script>
+</body>
+</html>

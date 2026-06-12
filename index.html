@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="id">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Daftar Hadir Verifikasi Berkas SPMB - SMKN 2 Marabahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#0f7a3b',
+              dark: '#11382a',
+              gold: '#f2b705',
+              red: '#ce3a20'
+            }
+          },
+          boxShadow: {
+            soft: '0 18px 45px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --surface: #ffffff;
+      --line: #d9e2ee;
+      --muted: #64748b;
+      --ink: #0f172a;
+      --brand: #0f7a3b;
+      --brand-soft: #edf8f1;
+    }
+
+    #attendanceForm section {
+      border-top: 1px solid #eef2f7;
+      padding-top: 1.25rem;
+    }
+
+    #attendanceForm section:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    #attendanceForm h3 {
+      color: var(--ink);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    #attendanceForm label span {
+      color: #334155;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    #attendanceForm input,
+    #attendanceForm select,
+    #attendanceForm textarea {
+      min-height: 3rem;
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.65rem;
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 0.95rem;
+      transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+    }
+
+    #attendanceForm input,
+    #attendanceForm select {
+      padding: 0 0.85rem;
+    }
+
+    #attendanceForm textarea {
+      padding: 0.85rem;
+    }
+
+    #attendanceForm input:focus,
+    #attendanceForm select:focus,
+    #attendanceForm textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(15, 122, 59, 0.12);
+      outline: none;
+    }
+
+    .proof-card {
+      background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, rgba(15, 122, 59, 0.8), rgba(242, 183, 5, 0.55)) border-box;
+      border: 1px solid transparent;
+    }
+
+    body.proof-mode #appMain {
+      display: block;
+      max-width: 720px;
+      padding-top: 2rem;
+    }
+
+    body.proof-mode #formShell {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    body.proof-mode #attendanceForm {
+      padding: 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#f4f7fb] text-slate-900 antialiased">
+  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+      <div class="flex min-w-0 flex-1 items-center gap-3">
+        <img src="assets/logo.png" alt="Logo SMKN 2 Marabahan" class="h-11 w-11 shrink-0 object-contain sm:h-12 sm:w-12">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase leading-tight text-brand-green sm:text-sm">SMKN 2 Marabahan</p>
+          <h1 class="max-w-[68vw] text-sm font-semibold leading-snug text-slate-950 sm:max-w-none sm:text-lg lg:text-xl">Daftar Hadir Verifikasi Berkas SPMB</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="appMain" class="mx-auto grid max-w-6xl gap-5 px-4 py-6 sm:px-6 lg:grid-cols-[320px_minmax(0,720px)] lg:justify-center lg:px-8">
+    <aside id="introPanel" class="lg:sticky lg:top-24 lg:h-fit">
+      <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-soft">
+        <div class="p-6">
+          <div class="mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-emerald-50">
+            <img src="assets/logo.png" alt="Logo SMKN 2 Marabahan" class="h-12 w-12 object-contain">
+          </div>
+          <p class="text-xs font-semibold uppercase text-brand-green">SPMB 2026</p>
+          <h2 class="mt-2 text-xl font-semibold leading-snug text-slate-950">Daftar hadir verifikasi berkas</h2>
+          <p class="mt-3 break-words text-sm leading-6 text-slate-600">
+            Isi data setelah mengambil nomor antrian. Gunakan nama dan NISN yang benar agar panitia mudah memverifikasi berkas.
+          </p>
+        </div>
+      </section>
+    </aside>
+
+    <section id="formShell" class="min-w-0 rounded-xl border border-slate-200 bg-white shadow-soft">
+      <div id="formPanelHeader" class="border-b border-slate-200 px-5 py-5 sm:px-6">
+        <p class="text-xs font-semibold uppercase text-brand-green">Form pendaftar</p>
+        <h2 class="mt-1 text-xl font-semibold text-slate-950">Data calon siswa</h2>
+        <p class="mt-1 text-sm text-slate-500">Isi kolom bertanda <span class="text-red-600">*</span>.</p>
+      </div>
+
+      <form id="attendanceForm" class="grid gap-6 p-5 sm:p-6">
+        <div id="notice" class="hidden rounded-md border p-4 text-sm leading-6"></div>
+
+        <section class="grid gap-4">
+          <h3 class="text-sm font-semibold uppercase text-slate-500">Data Antrian</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Nomor Antrian <span class="text-red-600">*</span></span>
+              <input name="nomorAntrian" type="text" autocomplete="off" required placeholder="Contoh: A001">
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">NISN <span class="text-red-600">*</span></span>
+              <input name="nisn" type="text" inputmode="numeric" maxlength="10" required placeholder="10 digit NISN">
+            </label>
+          </div>
+        </section>
+
+        <section class="grid gap-4">
+          <h3 class="text-sm font-semibold uppercase text-slate-500">Biodata</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="grid min-w-0 gap-1.5 md:col-span-2">
+              <span class="text-sm font-medium text-slate-700">Nama Lengkap <span class="text-red-600">*</span></span>
+              <input name="namaLengkap" type="text" autocomplete="name" required>
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Jenis Kelamin <span class="text-red-600">*</span></span>
+              <select name="jenisKelamin" required>
+                <option value="">Pilih</option>
+                <option>Laki-laki</option>
+                <option>Perempuan</option>
+              </select>
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Nomor HP <span class="text-red-600">*</span></span>
+              <input name="nomorHp" type="tel" autocomplete="tel" required placeholder="081234567890">
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Tempat Lahir</span>
+              <input name="tempatLahir" type="text">
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Tanggal Lahir</span>
+              <input name="tanggalLahir" type="date">
+            </label>
+          </div>
+        </section>
+
+        <section class="grid gap-4">
+          <h3 class="text-sm font-semibold uppercase text-slate-500">Sekolah dan Alamat</h3>
+          <div class="grid gap-4">
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Asal Sekolah <span class="text-red-600">*</span></span>
+              <input name="asalSekolah" type="text" required placeholder="SMP/MTs asal">
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Alamat <span class="text-red-600">*</span></span>
+              <textarea name="alamat" rows="3" required></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="grid gap-4">
+          <h3 class="text-sm font-semibold uppercase text-slate-500">Pilihan Jurusan</h3>
+          <div class="grid gap-4 xl:grid-cols-3">
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Pilihan 1 <span class="text-red-600">*</span></span>
+              <select name="pilihan1" required data-jurusan-select></select>
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Pilihan 2 <span class="text-red-600">*</span></span>
+              <select name="pilihan2" required data-jurusan-select></select>
+            </label>
+            <label class="grid min-w-0 gap-1.5">
+              <span class="text-sm font-medium text-slate-700">Pilihan 3 <span class="text-red-600">*</span></span>
+              <select name="pilihan3" required data-jurusan-select></select>
+            </label>
+          </div>
+        </section>
+
+        <div class="flex justify-end border-t border-slate-200 pt-5">
+          <button id="submitButton" type="submit" class="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-green px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-dark focus:outline-none focus:ring-4 focus:ring-emerald-100 sm:w-auto">
+            Kirim Daftar Hadir
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer id="appFooter" class="border-t border-slate-200 bg-white/70">
+    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+      <p>SMKN 2 Marabahan - Daftar Hadir Verifikasi Berkas SPMB 2026</p>
+      <a href="admin.html" class="inline-flex w-fit items-center rounded-md border border-slate-200 bg-white px-3 py-2 font-medium text-slate-600 transition hover:border-brand-green hover:text-brand-green">
+        Masuk Admin
+      </a>
+    </div>
+  </footer>
+
+  <script src="js/config.js?v=20260613-10"></script>
+  <script src="js/api.js?v=20260613-10"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="js/script.js?v=20260613-10"></script>
+</body>
+</html>
