@@ -105,20 +105,6 @@
   }
 
   function validate(payload) {
-    if (!/^\d+$/.test(payload.nisn)) {
-      return {
-        message: 'NISN hanya boleh angka.',
-        target: '[name="nisn"]'
-      };
-    }
-
-    if (payload.nisn.length !== 10) {
-      return {
-        message: 'NISN sebaiknya 10 digit.',
-        target: '[name="nisn"]'
-      };
-    }
-
     const phoneDigits = payload.nomorHp.replace(/[^\d]/g, '');
     if (!/^(08|\+62)/.test(payload.nomorHp) || phoneDigits.length < 10) {
       return {

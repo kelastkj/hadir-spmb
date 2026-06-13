@@ -432,7 +432,7 @@
         </td>
         <td class="px-5 py-4">
           <p class="truncate font-semibold text-slate-950">${escapeHtml(row.namaLengkap)}</p>
-          <p class="mt-1 truncate text-xs leading-5 text-slate-500">${escapeHtml(row.nisn)} - ${escapeHtml(row.asalSekolah)}</p>
+          <p class="mt-1 truncate text-xs leading-5 text-slate-500">${escapeHtml(row.nisn ? `${row.nisn} - ${row.asalSekolah}` : row.asalSekolah)}</p>
         </td>
         <td class="px-5 py-4">
           <p class="line-clamp-2 leading-6 text-slate-900">${escapeHtml(row.pilihan1)}</p>
@@ -453,7 +453,7 @@
             <input type="checkbox" data-select-id="${escapeHtml(row.id)}" class="row-select mt-1 h-4 w-4 shrink-0 rounded border-slate-300 text-brand-green focus:ring-brand-green" aria-label="Pilih ${escapeHtml(row.namaLengkap)}" ${selectedIds.has(row.id) ? 'checked' : ''}>
             <span class="min-w-0">
               <span class="block truncate text-base font-semibold text-slate-950">${escapeHtml(row.namaLengkap)}</span>
-              <span class="mt-1 block text-sm text-slate-500">${escapeHtml(row.nisn)} - Antrian ${escapeHtml(row.nomorAntrian)}</span>
+              <span class="mt-1 block text-sm text-slate-500">${escapeHtml(row.nisn ? `${row.nisn} - Antrian ${row.nomorAntrian}` : `Antrian ${row.nomorAntrian}`)}</span>
             </span>
           </label>
           <button type="button" data-id="${escapeHtml(row.id)}" class="detail-button min-h-9 shrink-0 rounded-lg border border-slate-300 px-3 text-xs font-semibold hover:border-brand-green hover:text-brand-green">Detail</button>

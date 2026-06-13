@@ -64,14 +64,6 @@
     }
 
     if (payload.action === 'submit') {
-      const duplicate = rows.some((row) => row.nisn === payload.nisn);
-      if (duplicate) {
-        return {
-          status: 'error',
-          message: 'NISN ini sudah pernah mengisi daftar hadir. Silakan hubungi panitia jika ada kesalahan data.'
-        };
-      }
-
       const row = {
         id: createId(rows.length + 1),
         timestamp: parts.timestamp,
@@ -79,7 +71,7 @@
         jamHadir: parts.jamHadir,
         nomorAntrian: payload.nomorAntrian,
         namaLengkap: payload.namaLengkap,
-        nisn: payload.nisn,
+        nisn: payload.nisn || '',
         jenisKelamin: payload.jenisKelamin,
         tempatLahir: payload.tempatLahir || '',
         tanggalLahir: payload.tanggalLahir || '',

@@ -6,13 +6,12 @@ Aplikasi daftar hadir dan verifikasi berkas SPMB untuk SMKN 2 Marabahan. Aplikas
 
 - Form daftar hadir calon siswa melalui `index.html`.
 - Input nomor antrian, biodata, asal sekolah, nomor HP, dan 3 pilihan jurusan.
-- Validasi frontend untuk NISN, nomor HP, dan pilihan jurusan agar tidak sama.
-- Cek duplikasi NISN di backend Google Apps Script.
+- Validasi frontend untuk nomor HP dan pilihan jurusan agar tidak sama.
 - Bukti pengisian daftar hadir yang bisa disimpan sebagai gambar.
 - Dashboard panitia melalui `admin.html`.
 - Login admin/panitia dengan token session dari Google Apps Script.
 - Ringkasan jumlah pendaftar, hadir hari ini, status verifikasi, dan peminat jurusan.
-- Pencarian dan filter data berdasarkan nama, NISN, nomor antrian, asal sekolah, tanggal, status, dan jurusan.
+- Pencarian dan filter data berdasarkan nama, nomor antrian, asal sekolah, tanggal, status, dan jurusan.
 - Detail data calon siswa dan update status verifikasi.
 - Batch update status untuk beberapa pendaftar.
 - Audit log sederhana di Google Spreadsheet.
@@ -166,7 +165,7 @@ Status bawaan aplikasi:
 - Password admin awal wajib diganti setelah setup.
 - Batasi akses Google Spreadsheet hanya untuk pengelola yang berwenang.
 - Backup Spreadsheet secara berkala selama masa SPMB.
-- Nomor antrian bukan ID unik. Identitas pendaftar dicegah duplikatnya menggunakan NISN.
+- Nomor antrian bukan ID unik. Data pendaftar dibedakan menggunakan ID otomatis, waktu hadir, nama, dan asal sekolah.
 
 ## Lisensi
 

@@ -93,7 +93,7 @@ function doGet() {
 
 function submitData(payload) {
   const required = [
-    'nomorAntrian', 'namaLengkap', 'nisn', 'jenisKelamin',
+    'nomorAntrian', 'namaLengkap', 'jenisKelamin',
     'tempatLahir', 'tanggalLahir', 'asalSekolah', 'alamat',
     'nomorHp', 'pilihan1', 'pilihan2', 'pilihan3'
   ];
@@ -103,7 +103,8 @@ function submitData(payload) {
     }
   }
 
-  if (!/^\d+$/.test(payload.nisn)) return error_('NISN hanya boleh angka.');
+  const nisn = clean_(payload.nisn);
+  if (nisn && !/^\d+$/.test(nisn)) return error_('NISN hanya boleh angka.');
   if (!isPhoneValid_(payload.nomorHp)) return error_('Nomor HP minimal 10 digit dan diawali 08 atau +62.');
 
   const choices = [payload.pilihan1, payload.pilihan2, payload.pilihan3];
@@ -114,11 +115,13 @@ function submitData(payload) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName(SHEETS.PENDAFTAR);
   const rows = getDataRows_(sheet);
-  const duplicate = rows.some(function (row) {
-    return String(row[6]) === String(payload.nisn);
-  });
-  if (duplicate) {
-    return error_('NISN ini sudah pernah mengisi daftar hadir. Silakan hubungi panitia jika ada kesalahan data.');
+  if (nisn) {
+    const duplicate = rows.some(function (row) {
+      return String(row[6]) === nisn;
+    });
+    if (duplicate) {
+      return error_('NISN ini sudah pernah mengisi daftar hadir. Silakan hubungi panitia jika ada kesalahan data.');
+    }
   }
 
   const config = getConfig_();
@@ -137,7 +140,7 @@ function submitData(payload) {
     Utilities.formatDate(now, timezone, 'HH:mm'),
     clean_(payload.nomorAntrian),
     clean_(payload.namaLengkap),
-    clean_(payload.nisn),
+    nisn,
     clean_(payload.jenisKelamin),
     clean_(payload.tempatLahir),
     clean_(payload.tanggalLahir),
