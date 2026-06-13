@@ -228,7 +228,7 @@
             </div>
             <div class="min-w-0">
               <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">SMKN 2 Marabahan</p>
-              <h2 class="mt-0.5 text-base font-semibold leading-snug text-slate-950">Bukti Daftar Hadir SPMB</h2>
+              <h2 class="mt-0.5 text-[15px] font-semibold leading-snug text-slate-950">Bukti Daftar Hadir Verifikasi Berkas SPMB</h2>
             </div>
           </div>
         </div>
