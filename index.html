@@ -138,7 +138,7 @@
           <p class="text-xs font-semibold uppercase text-brand-green">SPMB 2026</p>
           <h2 class="mt-2 text-xl font-semibold leading-snug text-slate-950">Daftar hadir verifikasi berkas</h2>
           <p class="mt-3 break-words text-sm leading-6 text-slate-600">
-            Isi data setelah mengambil nomor antrian. Gunakan nama dan NISN yang benar agar panitia mudah memverifikasi berkas.
+            Ambil nomor antrian dari panitia terlebih dahulu, lalu isi form ini sesuai nomor yang sudah diterima.
           </p>
         </div>
       </section>
@@ -148,7 +148,7 @@
       <div id="formPanelHeader" class="border-b border-slate-200 px-5 py-5 sm:px-6">
         <p class="text-xs font-semibold uppercase text-brand-green">Form pendaftar</p>
         <h2 class="mt-1 text-xl font-semibold text-slate-950">Data calon siswa</h2>
-        <p class="mt-1 text-sm text-slate-500">Isi kolom bertanda <span class="text-red-600">*</span>.</p>
+        <p class="mt-1 text-sm text-slate-500">Isi setelah mendapat nomor antrian fisik dari panitia.</p>
       </div>
 
       <form id="attendanceForm" class="grid gap-6 p-5 sm:p-6">
@@ -156,10 +156,13 @@
 
         <section class="grid gap-4">
           <h3 class="text-sm font-semibold uppercase text-slate-500">Data Antrian</h3>
+          <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
+            Masukkan nomor antrian yang sudah Anda ambil dari panitia. Jika belum mendapat nomor, ambil nomor antrian terlebih dahulu sebelum mengisi form.
+          </div>
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid min-w-0 gap-1.5">
-              <span class="text-sm font-medium text-slate-700">Nomor Antrian <span class="text-red-600">*</span></span>
-              <input name="nomorAntrian" type="text" autocomplete="off" required placeholder="Contoh: A001">
+              <span class="text-sm font-medium text-slate-700">Nomor Antrian yang Sudah Didapat <span class="text-red-600">*</span></span>
+              <input name="nomorAntrian" type="text" autocomplete="off" required placeholder="Contoh: 001 atau A001">
             </label>
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">NISN <span class="text-red-600">*</span></span>
