@@ -48,6 +48,12 @@ function setupDatabse() {
       .setFontWeight('bold')
       .setBackground('#0f7a3b')
       .setFontColor('#ffffff');
+
+    if (sheetName === SHEETS.PENDAFTAR) {
+      sheet.getRange('G:G').setNumberFormat('@');
+      sheet.getRange('M:M').setNumberFormat('@');
+    }
+
     sheet.autoResizeColumns(1, headers[sheetName].length);
   });
 
@@ -146,7 +152,11 @@ function submitData(payload) {
     ''
   ];
 
-  sheet.appendRow(row);
+  const nextRow = sheet.getLastRow() + 1;
+  sheet.getRange(nextRow, 7).setNumberFormat('@');
+  sheet.getRange(nextRow, 13).setNumberFormat('@');
+  sheet.getRange(nextRow, 1, 1, row.length).setValues([row]);
+
   writeLog_('SUBMIT', id, '', '', '', 'Submit daftar hadir ' + payload.namaLengkap);
   return {
     status: 'success',

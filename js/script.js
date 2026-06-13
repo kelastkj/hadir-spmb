@@ -137,11 +137,6 @@
 
   async function init() {
     populateJurusan(window.HadirApi.defaultJurusan);
-
-    const result = await window.HadirApi.request({ action: 'getJurusan' });
-    if (result.status === 'success' && Array.isArray(result.data) && result.data.length) {
-      populateJurusan(result.data);
-    }
   }
 
   form.addEventListener('submit', async (event) => {
