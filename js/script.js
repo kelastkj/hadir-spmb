@@ -5,6 +5,8 @@
   const formPanelHeader = document.getElementById('formPanelHeader');
   const submitButton = document.getElementById('submitButton');
   const jurusanSelects = Array.from(document.querySelectorAll('[data-jurusan-select]'));
+  const formControls = Array.from(form.querySelectorAll('input, select, textarea, button'));
+  let isSubmitting = false;
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, (char) => ({
@@ -29,9 +31,13 @@
   }
 
   function setLoading(isLoading) {
-    submitButton.disabled = isLoading;
-    submitButton.textContent = isLoading ? 'Mengirim...' : 'Kirim Daftar Hadir';
-    submitButton.classList.toggle('opacity-70', isLoading);
+    isSubmitting = isLoading;
+    formControls.forEach((control) => {
+      control.disabled = isLoading;
+      control.classList.toggle('cursor-not-allowed', isLoading);
+      control.classList.toggle('opacity-70', isLoading);
+    });
+    submitButton.textContent = isLoading ? 'Mengirim Data...' : 'Kirim Daftar Hadir';
   }
 
   function populateJurusan(items) {
@@ -146,6 +152,7 @@
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
     if (!form.reportValidity()) return;
 
     const payload = getPayload();
@@ -156,14 +163,16 @@
     }
 
     setLoading(true);
+    showNotice('info', 'Data sedang dikirim. Mohon tunggu dan jangan tutup halaman ini.');
     const result = await window.HadirApi.request({ action: 'submit', ...payload });
-    setLoading(false);
 
     if (result.status !== 'success') {
+      setLoading(false);
       showNotice('error', result.message || 'Data belum berhasil dikirim. Periksa koneksi internet, lalu coba lagi.');
       return;
     }
 
+    setLoading(false);
     form.reset();
     const data = result.data || payload;
     const submittedAt = new Date().toLocaleString('id-ID', {
