@@ -91,6 +91,11 @@
       outline: none;
     }
 
+    #attendanceForm input[data-uppercase],
+    #attendanceForm textarea[data-uppercase] {
+      text-transform: uppercase;
+    }
+
     .proof-card {
       background:
         linear-gradient(#ffffff, #ffffff) padding-box,
@@ -162,7 +167,7 @@
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">Nomor Antrian yang Sudah Didapat <span class="text-red-600">*</span></span>
-              <input name="nomorAntrian" type="text" autocomplete="off" required placeholder="Contoh: 001 atau A001">
+              <input name="nomorAntrian" type="text" autocomplete="off" required data-uppercase placeholder="Contoh: 001 atau A001">
             </label>
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">NISN <span class="text-red-600">*</span></span>
@@ -176,7 +181,7 @@
           <div class="grid gap-4 md:grid-cols-2">
             <label class="grid min-w-0 gap-1.5 md:col-span-2">
               <span class="text-sm font-medium text-slate-700">Nama Lengkap <span class="text-red-600">*</span></span>
-              <input name="namaLengkap" type="text" autocomplete="name" required>
+              <input name="namaLengkap" type="text" autocomplete="name" required data-uppercase>
             </label>
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">Jenis Kelamin <span class="text-red-600">*</span></span>
@@ -191,12 +196,12 @@
               <input name="nomorHp" type="tel" autocomplete="tel" required placeholder="081234567890">
             </label>
             <label class="grid min-w-0 gap-1.5">
-              <span class="text-sm font-medium text-slate-700">Tempat Lahir</span>
-              <input name="tempatLahir" type="text">
+              <span class="text-sm font-medium text-slate-700">Tempat Lahir <span class="text-red-600">*</span></span>
+              <input name="tempatLahir" type="text" required data-uppercase>
             </label>
             <label class="grid min-w-0 gap-1.5">
-              <span class="text-sm font-medium text-slate-700">Tanggal Lahir</span>
-              <input name="tanggalLahir" type="date">
+              <span class="text-sm font-medium text-slate-700">Tanggal Lahir <span class="text-red-600">*</span></span>
+              <input name="tanggalLahir" type="date" required>
             </label>
           </div>
         </section>
@@ -206,17 +211,18 @@
           <div class="grid gap-4">
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">Asal Sekolah <span class="text-red-600">*</span></span>
-              <input name="asalSekolah" type="text" required placeholder="SMP/MTs asal">
+              <input name="asalSekolah" type="text" required data-uppercase placeholder="SMP/MTs asal">
             </label>
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">Alamat <span class="text-red-600">*</span></span>
-              <textarea name="alamat" rows="3" required></textarea>
+              <textarea name="alamat" rows="3" required data-uppercase></textarea>
             </label>
           </div>
         </section>
 
         <section class="grid gap-4">
           <h3 class="text-sm font-semibold uppercase text-slate-500">Pilihan Jurusan</h3>
+          <p class="text-sm leading-6 text-slate-500">Pilih 3 jurusan yang berbeda. Pilihan 1, 2, dan 3 tidak boleh sama.</p>
           <div class="grid gap-4 xl:grid-cols-3">
             <label class="grid min-w-0 gap-1.5">
               <span class="text-sm font-medium text-slate-700">Pilihan 1 <span class="text-red-600">*</span></span>
@@ -251,9 +257,9 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=20260613-14"></script>
-  <script src="js/api.js?v=20260613-14"></script>
+  <script src="js/config.js?v=20260613-15"></script>
+  <script src="js/api.js?v=20260613-15"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="js/script.js?v=20260613-14"></script>
+  <script src="js/script.js?v=20260613-15"></script>
 </body>
 </html>

@@ -62,6 +62,11 @@
     Object.keys(payload).forEach((key) => {
       payload[key] = String(payload[key] || '').trim();
     });
+
+    ['nomorAntrian', 'namaLengkap', 'tempatLahir', 'asalSekolah', 'alamat'].forEach((key) => {
+      payload[key] = String(payload[key] || '').toUpperCase();
+    });
+
     return payload;
   }
 
@@ -180,9 +185,9 @@
           </div>
         </div>
         <div class="p-5">
-          <div class="rounded-lg bg-emerald-700 px-4 pb-5 pt-4 text-center text-white">
+          <div class="rounded-lg bg-emerald-700 px-4 pb-4 pt-4 text-center text-white">
             <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-50">Nomor Antrian</p>
-            <p data-proof-queue class="mt-1 text-5xl font-bold leading-tight">${escapeHtml(data.nomorAntrian)}</p>
+            <p data-proof-queue class="mt-0 text-5xl font-bold leading-[1.05]">${escapeHtml(data.nomorAntrian)}</p>
           </div>
           <dl class="mt-4 overflow-hidden rounded-lg border border-slate-100 text-sm">
             <div class="grid grid-cols-[88px_minmax(0,1fr)] gap-3 border-b border-slate-100 px-3 py-2.5">

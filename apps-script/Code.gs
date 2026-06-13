@@ -94,7 +94,8 @@ function doGet() {
 function submitData(payload) {
   const required = [
     'nomorAntrian', 'namaLengkap', 'nisn', 'jenisKelamin',
-    'asalSekolah', 'alamat', 'nomorHp', 'pilihan1', 'pilihan2', 'pilihan3'
+    'tempatLahir', 'tanggalLahir', 'asalSekolah', 'alamat',
+    'nomorHp', 'pilihan1', 'pilihan2', 'pilihan3'
   ];
   for (let i = 0; i < required.length; i += 1) {
     if (!String(payload[required[i]] || '').trim()) {
