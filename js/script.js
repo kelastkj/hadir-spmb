@@ -4,6 +4,7 @@
   const introPanel = document.getElementById('introPanel');
   const formPanelHeader = document.getElementById('formPanelHeader');
   const submitButton = document.getElementById('submitButton');
+  const submitModal = document.getElementById('submitModal');
   const jurusanSelects = Array.from(document.querySelectorAll('[data-jurusan-select]'));
   const formControls = Array.from(form.querySelectorAll('input, select, textarea, button'));
   let isSubmitting = false;
@@ -32,6 +33,9 @@
 
   function setLoading(isLoading) {
     isSubmitting = isLoading;
+    document.body.classList.toggle('overflow-hidden', isLoading);
+    submitModal.classList.toggle('hidden', !isLoading);
+    submitModal.classList.toggle('flex', isLoading);
     formControls.forEach((control) => {
       control.disabled = isLoading;
       control.classList.toggle('cursor-not-allowed', isLoading);
@@ -163,7 +167,6 @@
     }
 
     setLoading(true);
-    showNotice('info', 'Data sedang dikirim. Mohon tunggu dan jangan tutup halaman ini.');
     const result = await window.HadirApi.request({ action: 'submit', ...payload });
 
     if (result.status !== 'success') {

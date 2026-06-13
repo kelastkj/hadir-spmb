@@ -257,9 +257,19 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=20260613-18"></script>
-  <script src="js/api.js?v=20260613-18"></script>
+  <div id="submitModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="submitModalTitle">
+    <div class="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-2xl">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
+        <span class="h-7 w-7 animate-spin rounded-full border-4 border-emerald-200 border-t-brand-green"></span>
+      </div>
+      <h2 id="submitModalTitle" class="mt-4 text-lg font-semibold text-slate-950">Mengirim Data</h2>
+      <p class="mt-2 text-sm leading-6 text-slate-600">Mohon tunggu. Jangan tutup halaman atau menekan tombol kembali.</p>
+    </div>
+  </div>
+
+  <script src="js/config.js?v=20260613-19"></script>
+  <script src="js/api.js?v=20260613-19"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="js/script.js?v=20260613-18"></script>
+  <script src="js/script.js?v=20260613-19"></script>
 </body>
 </html>
