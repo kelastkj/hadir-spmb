@@ -246,8 +246,18 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20260613-21"></script>
-  <script src="js/api.js?v=20260613-21"></script>
-  <script src="js/admin.js?v=20260613-21"></script>
+  <div id="processModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="processModalTitle">
+    <div class="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-2xl">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
+        <span class="h-7 w-7 animate-spin rounded-full border-4 border-emerald-200 border-t-brand-green"></span>
+      </div>
+      <h2 id="processModalTitle" class="mt-4 text-lg font-semibold text-slate-950">Menyimpan Data</h2>
+      <p id="processModalMessage" class="mt-2 text-sm leading-6 text-slate-600">Mohon tunggu. Data sedang dikirim ke Spreadsheet.</p>
+    </div>
+  </div>
+
+  <script src="js/config.js?v=20260613-22"></script>
+  <script src="js/api.js?v=20260613-22"></script>
+  <script src="js/admin.js?v=20260613-22"></script>
 </body>
 </html>

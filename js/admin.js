@@ -45,6 +45,9 @@
   const detailList = $('#detailList');
   const statusForm = $('#statusForm');
   const saveStatusButton = $('#saveStatusButton');
+  const processModal = $('#processModal');
+  const processModalTitle = $('#processModalTitle');
+  const processModalMessage = $('#processModalMessage');
 
   let currentSession = null;
   let rows = [];
@@ -160,6 +163,20 @@
     loginNotice.className = 'rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900';
     loginNotice.textContent = message;
     loginNotice.classList.remove('hidden');
+  }
+
+  function showProcessModal(title, message) {
+    processModalTitle.textContent = title;
+    processModalMessage.textContent = message;
+    processModal.classList.remove('hidden');
+    processModal.classList.add('flex');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function hideProcessModal() {
+    processModal.classList.add('hidden');
+    processModal.classList.remove('flex');
+    document.body.classList.remove('overflow-hidden');
   }
 
   function showDashboard() {
@@ -626,22 +643,37 @@
 
     applyBatchButton.disabled = true;
     applyBatchButton.textContent = 'Menyimpan...';
-    for (const id of ids) {
-      const result = await window.HadirApi.request({
-        action: 'updateStatus',
-        token: currentSession.token,
-        id,
-        statusVerifikasi: batchStatus.value,
-        catatanPanitia: batchNote.value
-      });
-      if (result.status !== 'success') {
-        alert(result.message || 'Sebagian data gagal diperbarui.');
-        break;
+    showProcessModal('Menyimpan Batch Verifikasi', `${ids.length} data sedang diperbarui. Mohon tunggu.`);
+    let failedMessage = '';
+    try {
+      for (const id of ids) {
+        const result = await window.HadirApi.request({
+          action: 'updateStatus',
+          token: currentSession.token,
+          id,
+          statusVerifikasi: batchStatus.value,
+          catatanPanitia: batchNote.value
+        });
+        if (result.status !== 'success') {
+          failedMessage = result.message || 'Sebagian data gagal diperbarui.';
+          break;
+        }
       }
+    } catch (error) {
+      failedMessage = 'Batch verifikasi gagal dikirim. Periksa koneksi internet, lalu coba lagi.';
+    } finally {
+      hideProcessModal();
+      applyBatchButton.textContent = 'Update';
+      applyBatchButton.disabled = false;
+    }
+
+    if (failedMessage) {
+      alert(failedMessage);
+      await loadData();
+      return;
     }
     selectedIds.clear();
     batchNote.value = '';
-    applyBatchButton.textContent = 'Update';
     await loadData();
   });
 
@@ -669,9 +701,18 @@
     const payload = Object.fromEntries(new FormData(statusForm).entries());
     saveStatusButton.disabled = true;
     saveStatusButton.textContent = 'Menyimpan...';
-    const result = await window.HadirApi.request({ action: 'updateStatus', token: currentSession.token, ...payload });
-    saveStatusButton.disabled = false;
-    saveStatusButton.textContent = 'Simpan Status';
+    showProcessModal('Menyimpan Status', 'Status verifikasi sedang dikirim ke Spreadsheet.');
+    let result;
+    try {
+      result = await window.HadirApi.request({ action: 'updateStatus', token: currentSession.token, ...payload });
+    } catch (error) {
+      result = { status: 'error', message: 'Status gagal dikirim. Periksa koneksi internet, lalu coba lagi.' };
+    } finally {
+      hideProcessModal();
+      saveStatusButton.disabled = false;
+      saveStatusButton.textContent = 'Simpan Status';
+    }
+
     if (result.status === 'success') {
       detailModal.classList.add('hidden');
       await loadData();
