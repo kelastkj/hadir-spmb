@@ -215,7 +215,6 @@ function loginAdmin(payload) {
 function checkSession(payload) {
   const session = validateSession_(payload.token);
   if (!session.valid) return error_(session.message);
-  writeLog_('CHECK_SESSION', '', session.username, session.nama, session.role, 'Session valid');
   return {
     status: 'success',
     message: 'Session valid',
@@ -233,20 +232,19 @@ function getData(payload) {
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS.PENDAFTAR);
   const rows = getDataRows_(sheet);
-  const displayRows = getDisplayDataRows_(sheet);
-  const data = rows.map(function (row, index) {
-    const displayRow = displayRows[index] || [];
+  const timezone = getConfig_().timezone || 'Asia/Makassar';
+  const data = rows.map(function (row) {
     return {
       id: row[0],
-      timestamp: formatValue_(row[1]),
-      tanggalHadir: displayRow[2] || formatDateOnly_(row[2]),
-      jamHadir: displayRow[3] || formatTimeOnly_(row[3]),
+      timestamp: formatValue_(row[1], timezone),
+      tanggalHadir: formatDateOnly_(row[2], timezone),
+      jamHadir: formatTimeOnly_(row[3], timezone),
       nomorAntrian: row[4],
       namaLengkap: row[5],
       nisn: row[6],
       jenisKelamin: row[7],
       tempatLahir: row[8],
-      tanggalLahir: formatDateOnly_(row[9]),
+      tanggalLahir: formatDateOnly_(row[9], timezone),
       asalSekolah: row[10],
       alamat: row[11],
       nomorHp: row[12],
@@ -256,7 +254,7 @@ function getData(payload) {
       statusVerifikasi: row[16],
       catatanPanitia: row[17],
       petugasVerifikasi: row[18],
-      waktuUpdateStatus: formatValue_(row[19])
+      waktuUpdateStatus: formatValue_(row[19], timezone)
     };
   }).reverse();
 
@@ -427,23 +425,23 @@ function isPhoneValid_(value) {
   return /^(08|\+62)/.test(text) && digits.length >= 10;
 }
 
-function formatValue_(value) {
+function formatValue_(value, timezone) {
   if (Object.prototype.toString.call(value) === '[object Date]' && !isNaN(value)) {
-    return Utilities.formatDate(value, getConfig_().timezone || 'Asia/Makassar', 'yyyy-MM-dd HH:mm:ss');
+    return Utilities.formatDate(value, timezone || 'Asia/Makassar', 'yyyy-MM-dd HH:mm:ss');
   }
   return value || '';
 }
 
-function formatDateOnly_(value) {
+function formatDateOnly_(value, timezone) {
   if (Object.prototype.toString.call(value) === '[object Date]' && !isNaN(value)) {
-    return Utilities.formatDate(value, getConfig_().timezone || 'Asia/Makassar', 'yyyy-MM-dd');
+    return Utilities.formatDate(value, timezone || 'Asia/Makassar', 'yyyy-MM-dd');
   }
   return value || '';
 }
 
-function formatTimeOnly_(value) {
+function formatTimeOnly_(value, timezone) {
   if (Object.prototype.toString.call(value) === '[object Date]' && !isNaN(value)) {
-    return Utilities.formatDate(value, getConfig_().timezone || 'Asia/Makassar', 'HH:mm');
+    return Utilities.formatDate(value, timezone || 'Asia/Makassar', 'HH:mm');
   }
   return value || '';
 }

@@ -1,5 +1,7 @@
 (function () {
   const SESSION_KEY = 'hadirSpmbSession';
+  const DATA_CACHE_KEY = 'hadirSpmbAdminDataCache';
+  const DATA_CACHE_MAX_AGE = 2 * 60 * 1000;
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -144,6 +146,28 @@
     }
   }
 
+  function readCachedRows() {
+    try {
+      const cache = JSON.parse(sessionStorage.getItem(DATA_CACHE_KEY) || 'null');
+      if (!cache || !Array.isArray(cache.rows)) return [];
+      if (Date.now() - Number(cache.savedAt || 0) > DATA_CACHE_MAX_AGE) return [];
+      return cache.rows;
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writeCachedRows(nextRows) {
+    try {
+      sessionStorage.setItem(DATA_CACHE_KEY, JSON.stringify({
+        savedAt: Date.now(),
+        rows: nextRows
+      }));
+    } catch (error) {
+      // Cache is optional; ignore quota/private-mode failures.
+    }
+  }
+
   function saveSession(result) {
     currentSession = {
       token: result.token,
@@ -157,6 +181,7 @@
   function clearSession() {
     currentSession = null;
     sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(DATA_CACHE_KEY);
   }
 
   function showLoginNotice(message) {
@@ -208,12 +233,20 @@
 
   function setLoadingData(isLoading) {
     isLoadingData = isLoading;
-    loadingState.classList.toggle('hidden', !isLoading);
-    dataContent.classList.toggle('hidden', isLoading);
     selectAllVisible.disabled = isLoading;
     refreshButton.disabled = isLoading;
     refreshButton.textContent = isLoading ? 'Memuat...' : 'Muat Ulang';
     refreshButton.classList.toggle('opacity-60', isLoading);
+
+    if (isLoading && rows.length) {
+      loadingState.classList.add('hidden');
+      dataContent.classList.remove('hidden');
+      resultCount.textContent = 'Memperbarui data terbaru...';
+      return;
+    }
+
+    loadingState.classList.toggle('hidden', !isLoading);
+    dataContent.classList.toggle('hidden', isLoading);
     if (!isLoading) return;
 
     const summaryLabels = ['Total Data', 'Hadir Hari Ini', 'Menunggu Verifikasi', 'Berkas Lengkap'];
@@ -574,6 +607,13 @@
   }
 
   async function loadData() {
+    const cachedRows = rows.length ? [] : readCachedRows();
+    if (cachedRows.length) {
+      rows = cachedRows;
+      filteredRows = cachedRows;
+      applyFilters();
+    }
+
     setLoadingData(true);
     const result = await window.HadirApi.request({ action: 'getData', token: currentSession.token });
 
@@ -586,6 +626,7 @@
     }
 
     rows = Array.isArray(result.data) ? result.data : [];
+    writeCachedRows(rows);
     const validIds = new Set(rows.map((row) => row.id));
     selectedIds = new Set(Array.from(selectedIds).filter((id) => validIds.has(id)));
     setLoadingData(false);
