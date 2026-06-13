@@ -185,9 +185,11 @@
           </div>
         </div>
         <div class="p-5">
-          <div class="rounded-lg bg-emerald-700 px-4 pb-4 pt-4 text-center text-white">
-            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-50">Nomor Antrian</p>
-            <p data-proof-queue class="mt-0 text-5xl font-bold leading-[1.05]">${escapeHtml(data.nomorAntrian)}</p>
+          <div class="flex h-32 items-center justify-center rounded-lg bg-emerald-700 px-4 text-center text-white">
+            <div class="flex flex-col items-center justify-center gap-2">
+              <p class="text-[11px] font-semibold uppercase leading-none tracking-wide text-emerald-50">Nomor Antrian</p>
+              <p data-proof-queue class="block text-6xl font-bold leading-[0.82] tracking-tight">${escapeHtml(data.nomorAntrian)}</p>
+            </div>
           </div>
           <dl class="mt-4 overflow-hidden rounded-lg border border-slate-100 text-sm">
             <div class="grid grid-cols-[88px_minmax(0,1fr)] gap-3 border-b border-slate-100 px-3 py-2.5">
