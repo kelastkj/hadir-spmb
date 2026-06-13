@@ -175,15 +175,25 @@
     try {
       const response = await fetch(url, {
         method: 'POST',
+        mode: 'cors',
+        redirect: 'follow',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       });
       const text = await response.text();
-      return JSON.parse(text);
+
+      try {
+        return JSON.parse(text);
+      } catch (error) {
+        return {
+          status: 'error',
+          message: `Respons server tidak valid. Detail: ${text.slice(0, 160) || response.statusText || 'Respons kosong'}`
+        };
+      }
     } catch (error) {
       return {
         status: 'error',
-        message: 'Data belum berhasil dikirim. Periksa koneksi internet, lalu coba lagi.'
+        message: `Data belum berhasil dikirim. Detail: ${error.message || 'Periksa koneksi internet, lalu coba lagi.'}`
       };
     }
   }

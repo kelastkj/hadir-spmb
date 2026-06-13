@@ -83,7 +83,7 @@ function doPost(e) {
 
     return json_(result);
   } catch (err) {
-    return json_(error_('Request tidak valid.'));
+    return json_(error_('Request tidak valid: ' + getErrorMessage_(err)));
   }
 }
 
@@ -457,4 +457,9 @@ function json_(data) {
 
 function error_(message) {
   return { status: 'error', message: message };
+}
+
+function getErrorMessage_(err) {
+  if (!err) return 'Unknown error';
+  return err.message || String(err);
 }
