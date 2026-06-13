@@ -167,43 +167,43 @@
       timeZone: window.APP_CONFIG.TIMEZONE
     });
     showNotice('success', `
-      <div id="proofCard" class="proof-card mx-auto max-w-lg overflow-hidden rounded-xl bg-white">
-        <div class="border-b border-emerald-100 bg-emerald-50 p-5">
+      <div id="proofCard" class="proof-card mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white">
+        <div class="border-b border-emerald-100 bg-emerald-50 px-5 py-4">
           <div class="flex items-center gap-3">
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white">
-              <img src="assets/logo.png" alt="Logo SMKN 2 Marabahan" class="h-12 w-12 object-contain">
+            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm">
+              <img src="assets/logo.png" alt="Logo SMKN 2 Marabahan" class="h-11 w-11 object-contain">
             </div>
             <div class="min-w-0">
-              <p class="text-xs font-semibold uppercase text-emerald-700">SMKN 2 Marabahan</p>
-              <h2 class="text-lg font-semibold leading-tight text-slate-950">Bukti Pengisian Daftar Hadir SPMB</h2>
+              <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">SMKN 2 Marabahan</p>
+              <h2 class="mt-0.5 text-base font-semibold leading-snug text-slate-950">Bukti Daftar Hadir SPMB</h2>
             </div>
           </div>
         </div>
         <div class="p-5">
-          <div class="rounded-xl bg-emerald-700 px-4 py-5 text-center text-white">
-            <p class="text-xs font-medium uppercase">Nomor Antrian</p>
-            <p data-proof-queue class="mt-1 text-5xl font-semibold leading-none">${escapeHtml(data.nomorAntrian)}</p>
+          <div class="rounded-lg bg-emerald-700 px-4 py-4 text-center text-white">
+            <p class="text-[11px] font-semibold uppercase tracking-wide text-emerald-50">Nomor Antrian</p>
+            <p data-proof-queue class="mt-1 text-5xl font-bold leading-none">${escapeHtml(data.nomorAntrian)}</p>
           </div>
-          <dl class="mt-5 grid gap-3 text-sm">
-            <div class="flex justify-between gap-4 border-b border-slate-100 pb-2">
+          <dl class="mt-4 overflow-hidden rounded-lg border border-slate-100 text-sm">
+            <div class="grid grid-cols-[88px_minmax(0,1fr)] gap-3 border-b border-slate-100 px-3 py-2.5">
               <dt class="text-slate-500">Nama</dt>
-              <dd class="text-right font-medium text-slate-950">${escapeHtml(data.namaLengkap)}</dd>
+              <dd class="break-words text-right font-semibold text-slate-950">${escapeHtml(data.namaLengkap)}</dd>
             </div>
-            <div class="flex justify-between gap-4 border-b border-slate-100 pb-2">
+            <div class="grid grid-cols-[88px_minmax(0,1fr)] gap-3 border-b border-slate-100 px-3 py-2.5">
               <dt class="text-slate-500">ID</dt>
-              <dd class="text-right font-medium text-slate-950">${escapeHtml(data.id || '-')}</dd>
+              <dd class="break-words text-right font-semibold text-slate-950">${escapeHtml(data.id || '-')}</dd>
             </div>
-            <div class="flex justify-between gap-4 border-b border-slate-100 pb-2">
+            <div class="grid grid-cols-[88px_minmax(0,1fr)] gap-3 border-b border-slate-100 px-3 py-2.5">
               <dt class="text-slate-500">Status</dt>
-              <dd class="text-right font-medium text-emerald-700">${escapeHtml(data.statusVerifikasi || 'Menunggu Verifikasi')}</dd>
+              <dd class="break-words text-right font-semibold text-emerald-700">${escapeHtml(data.statusVerifikasi || 'Menunggu Verifikasi')}</dd>
             </div>
-            <div class="flex justify-between gap-4">
+            <div class="grid grid-cols-[88px_minmax(0,1fr)] gap-3 px-3 py-2.5">
               <dt class="text-slate-500">Waktu</dt>
-              <dd class="text-right font-medium text-slate-950">${escapeHtml(submittedAt)}</dd>
+              <dd class="break-words text-right font-semibold text-slate-950">${escapeHtml(submittedAt)}</dd>
             </div>
           </dl>
-          <p class="mt-5 rounded-lg bg-slate-50 p-3 text-center text-sm leading-6 text-slate-600">
-            Simpan bukti ini dan tunjukkan kepada panitia saat dipanggil.
+          <p class="mt-4 rounded-lg bg-slate-50 px-3 py-2.5 text-center text-xs leading-5 text-slate-600">
+            Simpan dan tunjukkan bukti ini kepada panitia.
           </p>
         </div>
       </div>
