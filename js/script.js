@@ -5,9 +5,13 @@
   const formPanelHeader = document.getElementById('formPanelHeader');
   const submitButton = document.getElementById('submitButton');
   const submitModal = document.getElementById('submitModal');
+  const errorModal = document.getElementById('errorModal');
+  const errorModalMessage = document.getElementById('errorModalMessage');
+  const errorModalButton = document.getElementById('errorModalButton');
   const jurusanSelects = Array.from(document.querySelectorAll('[data-jurusan-select]'));
   const formControls = Array.from(form.querySelectorAll('input, select, textarea, button'));
   let isSubmitting = false;
+  let pendingFocusTarget = null;
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, (char) => ({
@@ -33,15 +37,35 @@
 
   function setLoading(isLoading) {
     isSubmitting = isLoading;
-    document.body.classList.toggle('overflow-hidden', isLoading);
     submitModal.classList.toggle('hidden', !isLoading);
     submitModal.classList.toggle('flex', isLoading);
+    document.body.classList.toggle('overflow-hidden', isLoading || !errorModal.classList.contains('hidden'));
     formControls.forEach((control) => {
       control.disabled = isLoading;
       control.classList.toggle('cursor-not-allowed', isLoading);
       control.classList.toggle('opacity-70', isLoading);
     });
     submitButton.textContent = isLoading ? 'Mengirim Data...' : 'Kirim Daftar Hadir';
+  }
+
+  function showErrorModal(message, targetSelector = '') {
+    pendingFocusTarget = targetSelector ? form.querySelector(targetSelector) : null;
+    errorModalMessage.textContent = message;
+    errorModal.classList.remove('hidden');
+    errorModal.classList.add('flex');
+    document.body.classList.add('overflow-hidden');
+    errorModalButton.focus();
+  }
+
+  function hideErrorModal() {
+    errorModal.classList.add('hidden');
+    errorModal.classList.remove('flex');
+    document.body.classList.remove('overflow-hidden');
+
+    if (!pendingFocusTarget) return;
+    pendingFocusTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(() => pendingFocusTarget.focus({ preventScroll: true }), 250);
+    pendingFocusTarget = null;
   }
 
   function populateJurusan(items) {
@@ -82,24 +106,36 @@
 
   function validate(payload) {
     if (!/^\d+$/.test(payload.nisn)) {
-      return 'NISN hanya boleh angka.';
+      return {
+        message: 'NISN hanya boleh angka.',
+        target: '[name="nisn"]'
+      };
     }
 
     if (payload.nisn.length !== 10) {
-      return 'NISN sebaiknya 10 digit.';
+      return {
+        message: 'NISN sebaiknya 10 digit.',
+        target: '[name="nisn"]'
+      };
     }
 
     const phoneDigits = payload.nomorHp.replace(/[^\d]/g, '');
     if (!/^(08|\+62)/.test(payload.nomorHp) || phoneDigits.length < 10) {
-      return 'Nomor HP minimal 10 digit dan diawali 08 atau +62.';
+      return {
+        message: 'Nomor HP minimal 10 digit dan diawali 08 atau +62.',
+        target: '[name="nomorHp"]'
+      };
     }
 
     const choices = [payload.pilihan1, payload.pilihan2, payload.pilihan3];
     if (new Set(choices).size !== choices.length) {
-      return 'Pilihan jurusan 1, 2, dan 3 tidak boleh sama.';
+      return {
+        message: 'Pilihan jurusan 1, 2, dan 3 tidak boleh sama.',
+        target: '[name="pilihan1"]'
+      };
     }
 
-    return '';
+    return null;
   }
 
   function proofFileName() {
@@ -160,9 +196,9 @@
     if (!form.reportValidity()) return;
 
     const payload = getPayload();
-    const validationMessage = validate(payload);
-    if (validationMessage) {
-      showNotice('error', validationMessage);
+    const validationError = validate(payload);
+    if (validationError) {
+      showErrorModal(validationError.message, validationError.target);
       return;
     }
 
@@ -171,7 +207,7 @@
 
     if (result.status !== 'success') {
       setLoading(false);
-      showNotice('error', result.message || 'Data belum berhasil dikirim. Periksa koneksi internet, lalu coba lagi.');
+      showErrorModal(result.message || 'Data belum berhasil dikirim. Periksa koneksi internet, lalu coba lagi.');
       return;
     }
 
@@ -237,6 +273,11 @@
     `);
     setFormFieldsVisible(false);
     notice.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  errorModalButton.addEventListener('click', hideErrorModal);
+  errorModal.addEventListener('click', (event) => {
+    if (event.target === errorModal) hideErrorModal();
   });
 
   notice.addEventListener('click', (event) => {

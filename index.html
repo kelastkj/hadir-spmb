@@ -267,9 +267,20 @@
     </div>
   </div>
 
-  <script src="js/config.js?v=20260613-19"></script>
-  <script src="js/api.js?v=20260613-19"></script>
+  <div id="errorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="errorModalTitle">
+    <div class="w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-2xl">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-2xl font-bold text-red-600">!</div>
+      <h2 id="errorModalTitle" class="mt-4 text-lg font-semibold text-slate-950">Data Belum Sesuai</h2>
+      <p id="errorModalMessage" class="mt-2 text-sm leading-6 text-slate-600"></p>
+      <button id="errorModalButton" type="button" class="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand-green px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-dark">
+        Periksa Data
+      </button>
+    </div>
+  </div>
+
+  <script src="js/config.js?v=20260613-20"></script>
+  <script src="js/api.js?v=20260613-20"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="js/script.js?v=20260613-19"></script>
+  <script src="js/script.js?v=20260613-20"></script>
 </body>
 </html>
