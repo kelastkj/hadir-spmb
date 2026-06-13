@@ -260,7 +260,6 @@ function getData(payload) {
     };
   }).reverse();
 
-  writeLog_('GET_DATA', '', session.username, session.nama, session.role, 'Mengambil data pendaftar');
   return { status: 'success', data: data };
 }
 

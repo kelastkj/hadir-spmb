@@ -52,6 +52,7 @@
   let selectedIds = new Set();
   let activeTab = 'overview';
   let isLoadingData = false;
+  let filterTimer = null;
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"']/g, (char) => ({
@@ -185,6 +186,7 @@
     tabPanels.forEach((panel) => {
       panel.classList.toggle('hidden', panel.dataset.tabPanel !== tabName);
     });
+    renderActivePanel();
   }
 
   function setLoadingData(isLoading) {
@@ -192,13 +194,41 @@
     loadingState.classList.toggle('hidden', !isLoading);
     dataContent.classList.toggle('hidden', isLoading);
     selectAllVisible.disabled = isLoading;
+    refreshButton.disabled = isLoading;
+    refreshButton.textContent = isLoading ? 'Memuat...' : 'Muat Ulang';
+    refreshButton.classList.toggle('opacity-60', isLoading);
     if (!isLoading) return;
 
-    summaryGrid.innerHTML = Array.from({ length: 4 }).map(() => '<div class="h-24 animate-pulse rounded-xl bg-slate-100"></div>').join('');
-    overviewMajorList.innerHTML = '<div class="h-20 animate-pulse rounded-xl bg-slate-100"></div><div class="h-20 animate-pulse rounded-xl bg-slate-100"></div>';
-    priorityList.innerHTML = '<div class="h-20 animate-pulse rounded-xl bg-slate-100"></div><div class="h-20 animate-pulse rounded-xl bg-slate-100"></div>';
-    topMajorCard.innerHTML = '<div class="h-28 animate-pulse rounded-lg bg-emerald-600"></div>';
-    majorStatsGrid.innerHTML = '<div class="h-20 animate-pulse rounded-xl bg-slate-100"></div><div class="h-20 animate-pulse rounded-xl bg-slate-100"></div>';
+    const summaryLabels = ['Total Data', 'Hadir Hari Ini', 'Menunggu Verifikasi', 'Berkas Lengkap'];
+    summaryGrid.innerHTML = summaryLabels.map((label) => `
+      <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-soft">
+        <div class="mb-3 h-1 w-10 rounded-full bg-slate-200"></div>
+        <p class="text-xs font-semibold uppercase text-slate-400">${label}</p>
+        <div class="mt-3 h-8 w-20 animate-pulse rounded bg-slate-100"></div>
+        <p class="mt-2 text-xs text-slate-400">Memuat...</p>
+      </article>
+    `).join('');
+    overviewMajorList.innerHTML = Array.from({ length: 3 }).map(() => `
+      <article class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <div class="h-3 w-10 animate-pulse rounded bg-slate-200"></div>
+        <div class="mt-3 h-4 w-4/5 animate-pulse rounded bg-slate-200"></div>
+      </article>
+    `).join('');
+    priorityList.innerHTML = Array.from({ length: 3 }).map(() => `
+      <article class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <div class="flex items-center justify-between gap-3">
+          <div class="h-4 w-36 animate-pulse rounded bg-slate-200"></div>
+          <div class="h-6 w-10 animate-pulse rounded bg-slate-200"></div>
+        </div>
+        <div class="mt-3 h-3 w-4/5 animate-pulse rounded bg-slate-200"></div>
+      </article>
+    `).join('');
+    topMajorCard.innerHTML = `
+      <div class="h-3 w-28 animate-pulse rounded bg-emerald-500"></div>
+      <div class="mt-4 h-9 w-16 animate-pulse rounded bg-emerald-500"></div>
+      <div class="mt-4 h-4 w-40 animate-pulse rounded bg-emerald-500"></div>
+    `;
+    majorStatsGrid.innerHTML = Array.from({ length: 6 }).map(() => '<div class="h-24 animate-pulse rounded-xl bg-slate-100"></div>').join('');
     tableBody.innerHTML = '';
     mobileList.innerHTML = '';
     emptyState.classList.add('hidden');
@@ -409,7 +439,22 @@
     applyBatchButton.disabled = count === 0;
     clearSelectionButton.disabled = count === 0;
     clearSelectionButton.classList.toggle('opacity-50', count === 0);
-    renderOverview();
+  }
+
+  function renderActivePanel() {
+    if (isLoadingData) return;
+    if (activeTab === 'overview') {
+      renderSummary();
+      renderOverview();
+      return;
+    }
+    if (activeTab === 'majors') {
+      renderMajorStats();
+      return;
+    }
+    if (activeTab === 'data') {
+      renderTable();
+    }
   }
 
   function applyFilters() {
@@ -426,18 +471,20 @@
         && (!selectedMajor || row.pilihan1 === selectedMajor);
     });
 
-    renderSummary();
-    renderOverview();
-    renderMajorStats();
-    renderTable();
     renderSelectionState();
+    renderActivePanel();
+  }
+
+  function scheduleApplyFilters() {
+    window.clearTimeout(filterTimer);
+    filterTimer = window.setTimeout(applyFilters, 120);
   }
 
   function setSelected(id, isSelected) {
     if (isSelected) selectedIds.add(id);
     else selectedIds.delete(id);
-    renderTable();
     renderSelectionState();
+    renderActivePanel();
   }
 
   function toggleVisibleSelection(isSelected) {
@@ -445,8 +492,8 @@
       if (isSelected) selectedIds.add(row.id);
       else selectedIds.delete(row.id);
     });
-    renderTable();
     renderSelectionState();
+    renderActivePanel();
   }
 
   function detailItem(label, value) {
@@ -562,15 +609,15 @@
   tabButtons.forEach((button) => button.addEventListener('click', () => setActiveTab(button.dataset.tab)));
 
   [searchInput, dateFilter, statusFilter, majorFilter].forEach((input) => {
-    input.addEventListener('input', applyFilters);
+    input.addEventListener('input', scheduleApplyFilters);
     input.addEventListener('change', applyFilters);
   });
 
   selectAllVisible.addEventListener('change', () => toggleVisibleSelection(selectAllVisible.checked));
   clearSelectionButton.addEventListener('click', () => {
     selectedIds.clear();
-    renderTable();
     renderSelectionState();
+    renderActivePanel();
   });
 
   applyBatchButton.addEventListener('click', async () => {
