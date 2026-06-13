@@ -3,14 +3,13 @@
   const SESSION_KEY = 'hadirSpmbDemoSession';
 
   const defaultJurusan = [
-    'Teknik Jaringan Komputer dan Telekomunikasi',
-    'Teknik Kendaraan Ringan Otomotif',
+    'Teknik Kendaraan Ringan',
     'Teknik Sepeda Motor',
+    'Teknik Alat Berat',
     'Teknik Instalasi Tenaga Listrik',
+    'Teknik Komputer dan Jaringan',
     'Desain Komunikasi Visual',
-    'Akuntansi dan Keuangan Lembaga',
-    'Manajemen Perkantoran dan Layanan Bisnis',
-    'Bisnis Digital'
+    'Bisnis Retail'
   ];
 
   const statuses = [
@@ -195,4 +194,3 @@
     statuses
   };
 })();
-

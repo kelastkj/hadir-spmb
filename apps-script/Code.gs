@@ -359,15 +359,14 @@ function getDisplayDataRows_(sheet) {
 
 function seedJurusan_(sheet) {
   if (sheet.getLastRow() > 1) return;
-  sheet.getRange(2, 1, 8, 4).setValues([
-    [1, 'Teknik Jaringan Komputer dan Telekomunikasi', 'TJKT', 'Aktif'],
-    [2, 'Teknik Kendaraan Ringan Otomotif', 'TKRO', 'Aktif'],
-    [3, 'Teknik Sepeda Motor', 'TSM', 'Aktif'],
+  sheet.getRange(2, 1, 7, 4).setValues([
+    [1, 'Teknik Kendaraan Ringan', 'TKR', 'Aktif'],
+    [2, 'Teknik Sepeda Motor', 'TSM', 'Aktif'],
+    [3, 'Teknik Alat Berat', 'TAB', 'Aktif'],
     [4, 'Teknik Instalasi Tenaga Listrik', 'TITL', 'Aktif'],
-    [5, 'Desain Komunikasi Visual', 'DKV', 'Aktif'],
-    [6, 'Akuntansi dan Keuangan Lembaga', 'AKL', 'Aktif'],
-    [7, 'Manajemen Perkantoran dan Layanan Bisnis', 'MPLB', 'Aktif'],
-    [8, 'Bisnis Digital', 'BD', 'Aktif']
+    [5, 'Teknik Komputer dan Jaringan', 'TKJ', 'Aktif'],
+    [6, 'Desain Komunikasi Visual', 'DKV', 'Aktif'],
+    [7, 'Bisnis Retail', 'BR', 'Aktif']
   ]);
 }
 
