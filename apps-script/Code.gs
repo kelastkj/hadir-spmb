@@ -79,6 +79,7 @@ function doPost(e) {
     else if (action === 'updateStatus') result = updateStatus(payload);
     else if (action === 'logout') result = logout(payload);
     else if (action === 'getJurusan') result = getJurusan();
+    else if (action === 'getPublicStats') result = getPublicStats();
     else result = error_('Action tidak dikenali.');
 
     return json_(result);
@@ -315,6 +316,67 @@ function getJurusan() {
   return { status: 'success', data: data };
 }
 
+function getPublicStats() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const rows = getDataRows_(ss.getSheetByName(SHEETS.PENDAFTAR));
+  const majors = getJurusan().data;
+  const config = getConfig_();
+  const timezone = config.timezone || 'Asia/Makassar';
+  const majorStats = majors.reduce(function (stats, major) {
+    stats[major] = {
+      major: major,
+      pilihan1: 0,
+      pilihan2: 0,
+      pilihan3: 0,
+      semuaPilihan: 0
+    };
+    return stats;
+  }, {});
+  const genderCounts = {};
+  const dailyCounts = {};
+
+  rows.forEach(function (row) {
+    const pilihan1 = clean_(row[13]);
+    const pilihan2 = clean_(row[14]);
+    const pilihan3 = clean_(row[15]);
+    [pilihan1, pilihan2, pilihan3].forEach(function (major, index) {
+      if (!major) return;
+      if (!majorStats[major]) {
+        majorStats[major] = {
+          major: major,
+          pilihan1: 0,
+          pilihan2: 0,
+          pilihan3: 0,
+          semuaPilihan: 0
+        };
+      }
+      if (index === 0) majorStats[major].pilihan1 += 1;
+      if (index === 1) majorStats[major].pilihan2 += 1;
+      if (index === 2) majorStats[major].pilihan3 += 1;
+      majorStats[major].semuaPilihan += 1;
+    });
+
+    const gender = clean_(row[7]) || 'Belum Diisi';
+    genderCounts[gender] = (genderCounts[gender] || 0) + 1;
+
+    const dateKey = formatDateOnly_(row[2], timezone) || clean_(row[2]) || 'Tanpa Tanggal';
+    dailyCounts[dateKey] = (dailyCounts[dateKey] || 0) + 1;
+  });
+
+  return {
+    status: 'success',
+    data: {
+      totalHadir: rows.length,
+      updatedAt: Utilities.formatDate(new Date(), timezone, 'yyyy-MM-dd HH:mm:ss'),
+      majors: Object.keys(majorStats).map(function (key) { return majorStats[key]; }),
+      genderCounts: objectToSeries_(genderCounts),
+      dailyCounts: objectToSeries_(dailyCounts).sort(function (a, b) {
+        return String(a.label).localeCompare(String(b.label));
+      })
+    }
+  };
+}
+
 function validateSession_(token) {
   token = clean_(token);
   if (!token) return { valid: false, message: 'Sesi tidak valid. Silakan login ulang.' };
@@ -420,6 +482,12 @@ function writeLog_(action, dataId, username, nama, role, detail) {
 
 function clean_(value) {
   return String(value || '').trim();
+}
+
+function objectToSeries_(object) {
+  return Object.keys(object).map(function (key) {
+    return { label: key, value: object[key] };
+  });
 }
 
 function isPhoneValid_(value) {

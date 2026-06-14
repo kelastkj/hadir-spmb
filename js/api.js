@@ -51,6 +51,57 @@
     return `SPMB-${window.APP_CONFIG.SPMB_YEAR}-${String(nextNumber).padStart(4, '0')}`;
   }
 
+  function seriesFromObject(object) {
+    return Object.keys(object).map((label) => ({ label, value: object[label] }));
+  }
+
+  function buildPublicStats(sourceRows) {
+    const majorStats = defaultJurusan.reduce((stats, major) => {
+      stats[major] = {
+        major,
+        pilihan1: 0,
+        pilihan2: 0,
+        pilihan3: 0,
+        semuaPilihan: 0
+      };
+      return stats;
+    }, {});
+    const genderCounts = {};
+    const dailyCounts = {};
+
+    sourceRows.forEach((row) => {
+      [row.pilihan1, row.pilihan2, row.pilihan3].forEach((major, index) => {
+        if (!major) return;
+        if (!majorStats[major]) {
+          majorStats[major] = {
+            major,
+            pilihan1: 0,
+            pilihan2: 0,
+            pilihan3: 0,
+            semuaPilihan: 0
+          };
+        }
+        if (index === 0) majorStats[major].pilihan1 += 1;
+        if (index === 1) majorStats[major].pilihan2 += 1;
+        if (index === 2) majorStats[major].pilihan3 += 1;
+        majorStats[major].semuaPilihan += 1;
+      });
+
+      const gender = row.jenisKelamin || 'Belum Diisi';
+      genderCounts[gender] = (genderCounts[gender] || 0) + 1;
+      const date = row.tanggalHadir || 'Hari Ini';
+      dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+    });
+
+    return {
+      totalHadir: sourceRows.length,
+      updatedAt: new Date().toLocaleString('id-ID', { timeZone: window.APP_CONFIG.TIMEZONE }),
+      majors: Object.values(majorStats),
+      genderCounts: seriesFromObject(genderCounts),
+      dailyCounts: seriesFromObject(dailyCounts)
+    };
+  }
+
   function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -61,6 +112,10 @@
 
     if (payload.action === 'getJurusan') {
       return { status: 'success', data: defaultJurusan };
+    }
+
+    if (payload.action === 'getPublicStats') {
+      return { status: 'success', data: buildPublicStats(rows) };
     }
 
     if (payload.action === 'submit') {

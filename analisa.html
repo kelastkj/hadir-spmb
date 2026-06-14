@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Analisa Minat Jurusan SPMB - SMKN 2 Marabahan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#0f7a3b',
+              dark: '#11382a',
+              gold: '#f2b705',
+              red: '#ce3a20'
+            }
+          },
+          boxShadow: {
+            soft: '0 18px 45px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-[#f4f7fb] text-slate-900 antialiased">
+  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div class="mx-auto grid w-full max-w-7xl gap-3 px-3 py-3 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
+      <div class="flex min-w-0 items-center gap-3">
+        <img src="assets/logo.png" alt="Logo SMKN 2 Marabahan" class="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase text-brand-green sm:text-sm">SMKN 2 Marabahan</p>
+          <h1 class="text-sm font-semibold leading-tight text-slate-950 sm:text-xl">Analisa Minat Jurusan SPMB</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto grid w-full max-w-7xl gap-4 px-3 py-4 sm:gap-5 sm:px-6 sm:py-5 lg:px-8">
+    <section class="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-soft">
+      <div class="grid gap-4 p-4 sm:p-5 lg:grid-cols-[1.4fr_0.8fr] lg:items-center">
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase text-brand-green">SPMB 2026</p>
+          <h2 class="mt-2 text-xl font-semibold leading-tight text-slate-950 sm:text-3xl">Ringkasan minat jurusan</h2>
+          <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600">Halaman ini menampilkan ringkasan dari siswa yang sudah mengisi daftar hadir. Angka di sini hanya untuk melihat gambaran minat jurusan, bukan hasil penerimaan.</p>
+        </div>
+        <div class="relative min-w-0 rounded-xl bg-emerald-50 p-4">
+          <div class="min-w-0 pr-14">
+            <div class="min-w-0">
+              <p class="text-xs font-semibold uppercase text-emerald-700">Terakhir diperbarui</p>
+              <p id="updatedAt" class="mt-2 break-words text-base font-semibold text-slate-950 sm:text-lg">Memuat...</p>
+            </div>
+          </div>
+          <button id="refreshButton" type="button" class="absolute right-4 top-4 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-green text-white shadow-sm transition hover:bg-brand-dark disabled:opacity-70" aria-label="Muat ulang data" title="Muat ulang data">
+            <svg id="refreshIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20 6v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M4 18v-5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M6.1 9A7 7 0 0 1 18.6 6.7L20 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M17.9 15A7 7 0 0 1 5.4 17.3L4 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <p id="dataMode" class="mt-1 text-sm leading-6 text-slate-600">Mengambil data agregat.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="loadingState" class="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div class="h-28 animate-pulse rounded-xl bg-white shadow-soft"></div>
+      <div class="h-28 animate-pulse rounded-xl bg-white shadow-soft"></div>
+      <div class="h-28 animate-pulse rounded-xl bg-white shadow-soft"></div>
+      <div class="h-28 animate-pulse rounded-xl bg-white shadow-soft"></div>
+    </section>
+
+    <section id="dashboardContent" class="hidden min-w-0 grid gap-5">
+      <section id="kpiGrid" class="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4"></section>
+
+      <section class="grid min-w-0 gap-5">
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Catatan data</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Cara membaca data ini</h2>
+          <div id="dataNote" class="mt-4"></div>
+        </article>
+      </section>
+
+      <section class="grid min-w-0 gap-5">
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Fokus informasi jurusan</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Jurusan mana yang perlu disiapkan informasinya</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Grafik ini membantu sekolah melihat jurusan yang kemungkinan paling sering ditanyakan dan jurusan yang perlu lebih banyak dikenalkan.</p>
+          <div id="focusMap" class="mt-5 grid gap-3"></div>
+        </article>
+      </section>
+
+      <section class="grid min-w-0 gap-5 xl:grid-cols-[1.25fr_0.75fr]">
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div class="min-w-0">
+              <p class="text-xs font-semibold uppercase text-brand-green">Paling banyak diminati</p>
+              <h2 class="mt-1 text-lg font-semibold text-slate-950">Urutan jurusan berdasarkan pilihan 1</h2>
+            </div>
+            <span class="w-fit rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Berdasarkan pilihan 1</span>
+          </div>
+          <div id="rankingBars" class="mt-5 grid gap-3"></div>
+        </article>
+
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Paling sedikit diminati</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Jurusan dengan pilihan 1 paling sedikit</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Bagian ini hanya menunjukkan jumlah pilihan 1 yang lebih kecil dibanding jurusan lain.</p>
+          <div id="opportunityList" class="mt-4 grid gap-3"></div>
+        </article>
+      </section>
+
+      <section class="grid min-w-0 gap-5 xl:grid-cols-[1fr_1fr]">
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Pilihan 1, 2, dan 3</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Perbandingan pilihan setiap jurusan</h2>
+          <div id="choiceStack" class="mt-5 grid gap-4"></div>
+        </article>
+
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Data pengisi</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Jumlah pengisi berdasarkan jenis kelamin</h2>
+          <div id="genderBars" class="mt-5 grid gap-3"></div>
+        </article>
+      </section>
+
+      <section class="grid min-w-0 gap-5 xl:grid-cols-[1fr_0.8fr]">
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Tren kehadiran</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Pengisi daftar hadir per tanggal</h2>
+          <div id="dailyTrend" class="mt-5 flex min-h-60 max-w-full items-end gap-2 overflow-x-auto pb-2 sm:min-h-72 sm:gap-3"></div>
+        </article>
+
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Kesimpulan singkat</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Yang bisa dibaca dari data ini</h2>
+          <div id="insightList" class="mt-4 grid gap-3"></div>
+        </article>
+      </section>
+
+      <section class="grid min-w-0 gap-5">
+        <article class="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-soft sm:p-4">
+          <p class="text-xs font-semibold uppercase text-brand-green">Saran pelaksanaan SPMB</p>
+          <h2 class="mt-1 text-lg font-semibold text-slate-950">Langkah yang bisa disiapkan untuk layanan online</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600">Saran ini dibaca setelah melihat grafik, supaya sekolah bisa menyiapkan informasi jurusan dan panduan online yang lebih jelas.</p>
+          <div id="strategyList" class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="js/config.js?v=20260614-analisa-1"></script>
+  <script src="js/api.js?v=20260614-analisa-1"></script>
+  <script src="js/analisa.js?v=20260614-analisa-1"></script>
+</body>
+</html>
